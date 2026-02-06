@@ -111,67 +111,60 @@ export function Cart({ isOpen, onClose, items, onUpdateQuantity, onRemove, onChe
   return (
     <>
       <div
-        className="fixed inset-0 bg-black/80 z-40 backdrop-blur-md"
+        className="cart-overlay"
         onClick={onClose}
       />
-      <div className="fixed right-0 top-0 h-full w-full max-w-md bg-gray-900 shadow-2xl z-50 flex flex-col border-l border-cyan-500/30">
-        <div className="flex items-center justify-between p-6 border-b border-cyan-500/30">
-          <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 text-2xl">Carrito de Compras</h2>
+      <div className="cart-drawer">
+        <div className="cart-header">
+          <h2>Carrito de compras</h2>
           <button
             onClick={onClose}
-            className="text-gray-200 hover:text-cyan-400"
+            className="cart-close"
           >
             <X size={24} />
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="cart-body">
           {items.length === 0 ? (
-            <div className="text-center py-12 text-gray-500">
+            <div className="empty-state">
               Tu carrito está vacío
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="cart-items">
               {items.map(item => (
-                <div key={item.id_key} className="border border-cyan-500/30 rounded-lg p-4 bg-gray-800/50">
-                  <div className="flex gap-4">
-                    <div className="w-20 h-20 flex-shrink-0 bg-gray-900 rounded">
+                <div key={item.id_key} className="cart-item">
+                  <div className="cart-item__media">
+                    <div className="cart-item__image">
                       <img
                         src={item.image_url}
                         alt={item.name}
-                        className="w-full h-full object-cover"
                       />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="mb-1 truncate text-white">{item.name}</h3>
-                      <div className="text-gray-300">${item.price.toFixed(2)}</div>
+                  </div>
+                  <div className="cart-item__info">
+                    <div>
+                      <h3>{item.name}</h3>
+                      <p>${item.price.toFixed(2)}</p>
                     </div>
                     <button
                       onClick={() => onRemove(item.id_key)}
-                      className="text-gray-500 hover:text-red-400"
+                      className="cart-item__remove"
                     >
-                      <Trash2 size={20} />
+                      <Trash2 size={18} />
                     </button>
                   </div>
-                  <div className="flex items-center justify-between mt-4 pt-4 border-t border-cyan-500/20">
-                    <div className="flex items-center gap-3 border border-cyan-500/30 rounded-md">
-                      <button
-                        onClick={() => onUpdateQuantity(item.id_key, item.quantity - 1)}
-                        className="p-2 text-white hover:bg-cyan-500/20"
-                      >
+                  <div className="cart-item__footer">
+                    <div className="cart-qty">
+                      <button onClick={() => onUpdateQuantity(item.id_key, item.quantity - 1)}>
                         <Minus size={16} />
                       </button>
-                      <span className="w-8 text-center text-white">{item.quantity}</span>
-                      <button
-                        onClick={() => onUpdateQuantity(item.id_key, item.quantity + 1)}
-                        className="p-2 text-white hover:bg-cyan-500/20"
-                      >
+                      <span>{item.quantity}</span>
+                      <button onClick={() => onUpdateQuantity(item.id_key, item.quantity + 1)}>
                         <Plus size={16} />
                       </button>
                     </div>
-                    <div className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 text-xl">
-                      ${(item.price * item.quantity).toFixed(2)}
-                    </div>
+                    <span className="cart-item__total">${(item.price * item.quantity).toFixed(2)}</span>
                   </div>
                 </div>
               ))}
@@ -180,24 +173,22 @@ export function Cart({ isOpen, onClose, items, onUpdateQuantity, onRemove, onChe
         </div>
 
         {items.length > 0 && (
-          <div className="border-t border-cyan-500/30 p-6 bg-gray-800/50">
-            <div className="space-y-2 mb-4">
-              <div className="flex justify-between text-gray-400">
+          <div className="cart-summary">
+            <div className="cart-summary__line">
                 <span>Subtotal</span>
                 <span>${subtotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between text-gray-400">
+            </div>
+            <div className="cart-summary__line">
                 <span>Envío</span>
                 <span>{shipping === 0 ? 'Gratis' : `$${shipping.toFixed(2)}`}</span>
-              </div>
-              <div className="flex justify-between pt-2 border-t border-cyan-500/20 text-white text-xl">
+            </div>
+            <div className="cart-summary__total">
                 <span>Total</span>
                 <span className="font-bold">${total.toFixed(2)}</span>
-              </div>
             </div>
             <button
               onClick={handleCheckout}
-              className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white py-3 rounded-md font-bold"
+              className="btn btn--primary"
             >
               Finalizar Compra
             </button>
