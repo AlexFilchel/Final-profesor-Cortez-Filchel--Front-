@@ -75,7 +75,7 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-900">
+      <div className="app-shell">
         <Toaster position="bottom-left" richColors />
         <AuthProvider>
           <Navbar

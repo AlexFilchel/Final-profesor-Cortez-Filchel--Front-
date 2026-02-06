@@ -63,107 +63,109 @@ export function ProductsPage({ addToCart, searchQuery }: ProductsPageProps) {
   }, [categories]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex gap-8">
-        {/* Filters Sidebar */}
-        <aside className="w-64 flex-shrink-0">
-          <div className="sticky top-24 bg-gray-800/50 backdrop-blur-sm border border-cyan-500/30 rounded-lg p-6 shadow-lg shadow-cyan-500/10">
-            <h2 className="mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">Filtros</h2>
+    <div className="page">
+      <div className="container products-page">
+        <div className="products-layout">
+          <aside className="filters-panel">
+            <div className="filters-panel__header">
+              <h2>Filtros</h2>
+              <button type="button" className="filters-reset" onClick={() => {
+                setSelectedCategory(undefined);
+                setMinPrice('');
+                setMaxPrice('');
+                setInStockOnly(false);
+                setSortBy('default');
+              }}>
+                Limpiar todo
+              </button>
+            </div>
 
-            {/* Category Filter */}
-            <div className="mb-8 pb-8 border-b border-cyan-500/20">
-              <h3 className="mb-3 text-cyan-400">Categoría</h3>
-              <div className="space-y-2">
+            <div className="filters-group">
+              <h3>Categoría</h3>
+              <div className="filters-options">
                 {categoryOptions.map(category => (
-                  <label key={category.id_key} className="flex items-center gap-2 cursor-pointer group">
+                  <label key={category.id_key} className="checkbox-row">
                     <input
                       type="radio"
                       name="category"
                       value={category.id_key}
                       checked={selectedCategory === category.id_key}
                       onChange={() => setSelectedCategory(category.id_key)}
-                      className="w-4 h-4 accent-cyan-400"
                     />
-                    <span className="text-gray-300 group-hover:text-cyan-400 transition-colors">{category.name}</span>
+                    <span>{category.name}</span>
                   </label>
                 ))}
               </div>
             </div>
 
-            {/* Price Range Filter */}
-            <div className="mb-8 pb-8 border-b border-cyan-500/20">
-              <h3 className="mb-3 text-pink-400">Precio</h3>
-              <div className="space-y-2">
+            <div className="filters-group">
+              <h3>Rango de precio</h3>
+              <div className="filters-fields">
                 <input
                   type="number"
                   placeholder="Mínimo"
                   value={minPrice}
                   onChange={(e) => setMinPrice(e.target.value)}
-                  className="w-full bg-gray-900 border border-cyan-500/30 rounded-md px-4 py-2 text-white"
+                  className="input-field"
                 />
                 <input
                   type="number"
                   placeholder="Máximo"
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(e.target.value)}
-                  className="w-full bg-gray-900 border border-cyan-500/30 rounded-md px-4 py-2 text-white"
+                  className="input-field"
                 />
               </div>
             </div>
-            
-            {/* Stock and Sort Filters */}
-            <div className="pb-8 border-b border-cyan-500/20">
-              <h3 className="mb-3 text-green-400">Otros</h3>
-              <div className="space-y-2">
-                <label className="flex items-center gap-2 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    checked={inStockOnly}
-                    onChange={(e) => setInStockOnly(e.target.checked)}
-                    className="w-4 h-4 accent-green-400"
-                  />
-                  <span className="text-gray-300 group-hover:text-green-400 transition-colors">En stock</span>
-                </label>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full bg-gray-900 border border-cyan-500/30 rounded-md px-3 py-2 text-white"
-                >
-                  <option value="default">Por defecto</option>
-                  <option value="price_asc">Precio: de menor a mayor</option>
-                  <option value="price_desc">Precio: de mayor a menor</option>
-                  <option value="name_asc">Nombre: A-Z</option>
-                  <option value="name_desc">Nombre: Z-A</option>
-                </select>
+
+            <div className="filters-group">
+              <h3>Otros</h3>
+              <label className="checkbox-row">
+                <input
+                  type="checkbox"
+                  checked={inStockOnly}
+                  onChange={(e) => setInStockOnly(e.target.checked)}
+                />
+                <span>Solo en stock</span>
+              </label>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="input-field"
+              >
+                <option value="default">Ordenar por</option>
+                <option value="price_asc">Precio: de menor a mayor</option>
+                <option value="price_desc">Precio: de mayor a menor</option>
+                <option value="name_asc">Nombre: A-Z</option>
+                <option value="name_desc">Nombre: Z-A</option>
+              </select>
+            </div>
+          </aside>
+
+          <main className="products-content">
+            <div className="section-header section-header--left">
+              <h1 className="section-title">Productos</h1>
+              <p className="section-subtitle">{currentProducts.length} productos encontrados</p>
+            </div>
+
+            <div className="products-list">
+              {currentProducts.map(product => (
+                <ProductCard
+                  key={product.id_key}
+                  product={product}
+                  categoryName={categoryMap.get(product.category_id) || 'Desconocida'}
+                  onAddToCart={addToCart}
+                />
+              ))}
+            </div>
+
+            {currentProducts.length === 0 && (
+              <div className="empty-state">
+                No se encontraron productos con los filtros seleccionados
               </div>
-            </div>
-          </div>
-        </aside>
-
-        {/* Products Grid */}
-        <main className="flex-1">
-          <div className="mb-6">
-            <h1 className="mb-2 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 text-4xl font-bold">Productos</h1>
-            <p className="text-gray-400 text-lg font-semibold">{currentProducts.length} productos encontrados</p>
-          </div>
-
-          <div className="space-y-6">
-            {currentProducts.map(product => (
-              <ProductCard
-                key={product.id_key}
-                product={product}
-                categoryName={categoryMap.get(product.category_id) || 'Desconocida'}
-                onAddToCart={addToCart}
-              />
-            ))}
-          </div>
-
-          {currentProducts.length === 0 && (
-            <div className="text-center py-12 text-gray-400 bg-gray-800/50 border border-cyan-500/30 rounded-lg">
-              No se encontraron productos con los filtros seleccionados
-            </div>
-          )}
-        </main>
+            )}
+          </main>
+        </div>
       </div>
       <Footer />
     </div>

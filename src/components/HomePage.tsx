@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Cpu, HardDrive, Monitor, Zap, TrendingUp, Award } from 'lucide-react';
+import { Cpu, Zap, TrendingUp, Award } from 'lucide-react';
 import { Footer } from './Footer';
 import { searchProducts } from './api';
 import type { Product } from './types';
@@ -68,157 +68,161 @@ export function HomePage({ searchQuery }: HomePageProps) {
         );
     }
 
+  const categories = [
+    {
+      title: 'Placas de video',
+      description: 'GPU potentes para jugar, editar y trabajar sin límites.',
+      image:
+        'https://images.unsplash.com/photo-1591489378430-ef2f4c626b35?auto=format&fit=crop&w=1200&q=80',
+    },
+    {
+      title: 'Memorias RAM',
+      description: 'Módulos de alta velocidad para maximizar el rendimiento de tu PC.',
+      image:
+        'https://images.unsplash.com/photo-1562976540-1502c2145186?auto=format&fit=crop&w=1200&q=80',
+    },
+    {
+      title: 'Periféricos',
+      description: 'Teclados, mouse y accesorios diseñados para precisión y confort.',
+      image:
+        'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?auto=format&fit=crop&w=1200&q=80',
+    },
+  ];
+
+  const featured = [
+    {
+      title: 'NVIDIA GeForce RTX 4070',
+      price: '$699.99',
+      image:
+        'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=1200&q=80',
+    },
+    {
+      title: 'Kingston Fury 32GB DDR5',
+      price: '$179.99',
+      image:
+        'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=1200&q=80',
+    },
+    {
+      title: 'Mouse Logitech G Pro X',
+      price: '$129.99',
+      image:
+        'https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=1200&q=80',
+    },
+    {
+      title: 'Teclado HyperX Alloy Origins',
+      price: '$99.99',
+      image:
+        'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=1200&q=80',
+    },
+  ];
+
+  const benefits = [
+    {
+      title: '6 cuotas sin interés',
+      description: 'En compras superiores a $30.000.',
+      icon: <Zap size={28} />,
+    },
+    {
+      title: 'Envíos a todo el país',
+      description: 'Gratis en compras mayores a $50.000.',
+      icon: <Award size={28} />,
+    },
+    {
+      title: '100% originales',
+      description: 'Garantía de autenticidad en cada producto.',
+      icon: <Cpu size={28} />,
+    },
+    {
+      title: 'Descuentos especiales',
+      description: 'Hasta 20% pagando por transferencia.',
+      icon: <TrendingUp size={28} />,
+    },
+  ];
+
   return (
-    <div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Hero Section */}
-        <div className="mb-16">
-          <div className="relative h-96 bg-black rounded-lg overflow-hidden border border-cyan-500/30 shadow-2xl shadow-cyan-500/20">
-            <img
-              src="https://images.unsplash.com/photo-1603481588273-2f908a9a7a1b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnYW1pbmclMjBwYyUyMHNldHVwfGVufDF8fHx8MTc2NDk5OTE3M3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-              alt="Gaming PC Setup"
-              className="w-full h-full object-cover opacity-60"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex items-center justify-center">
-              <div className="text-center text-white">
-                <h1 className="mb-4 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">Componentes de Alta Calidad</h1>
-                <p className="mb-8 text-gray-300">Construye la PC de tus sueños</p>
-                <Link
-                  to="/products"
-                  className="inline-block bg-gradient-to-r from-cyan-500 to-purple-600 text-white px-8 py-3 rounded-md hover:shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 transform hover:scale-105"
-                >
-                  Ver Productos
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Categories */}
-        <div className="mb-16">
-          <h2 className="mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 text-4xl font-bold">Categorías Principales</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="border border-cyan-500/30 rounded-lg p-8 text-center hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 bg-gray-800/50 backdrop-blur-sm group">
-              <Cpu className="mx-auto mb-4 text-cyan-400 group-hover:text-purple-400 transition-colors" size={48} />
-              <h3 className="mb-2 text-white text-xl font-bold">Procesadores</h3>
-              <p className="text-gray-400">Intel y AMD de última generación</p>
-            </div>
-            <div className="border border-purple-500/30 rounded-lg p-8 text-center hover:border-purple-400 hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300 bg-gray-800/50 backdrop-blur-sm group">
-              <HardDrive className="mx-auto mb-4 text-purple-400 group-hover:text-pink-400 transition-colors" size={48} />
-              <h3 className="mb-2 text-white text-xl font-bold">Almacenamiento</h3>
-              <p className="text-gray-400">SSD y HDD de alta velocidad</p>
-            </div>
-            <div className="border border-pink-500/30 rounded-lg p-8 text-center hover:border-pink-400 hover:shadow-lg hover:shadow-pink-500/30 transition-all duration-300 bg-gray-800/50 backdrop-blur-sm group">
-              <Monitor className="mx-auto mb-4 text-pink-400 group-hover:text-cyan-400 transition-colors" size={48} />
-              <h3 className="mb-2 text-white text-xl font-bold">Monitores</h3>
-              <p className="text-gray-400">Pantallas de alta resolución</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Featured Products */}
-        <div className="mb-16">
-          <h2 className="mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 text-4xl font-bold">Productos Destacados</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-gray-800/50 border border-cyan-500/30 rounded-lg overflow-hidden hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 group">
-              <div className="h-48 bg-gray-900 overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1645802106095-765b7e86f5bb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnYW1pbmclMjBrZXlib2FyZCUyMHJnYnxlbnwxfHx8fDE3NjQ5OTM4MjZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-                  alt="Gaming Keyboard"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="text-white mb-2 font-bold text-lg">Teclado Mecánico RGB</h3>
-                <p className="text-cyan-400 font-bold text-xl">29.99</p>
-              </div>
-            </div>
-
-            <div className="bg-gray-800/50 border border-purple-500/30 rounded-lg overflow-hidden hover:border-purple-400 hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300 group">
-              <div className="h-48 bg-gray-900 overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1628832307345-7404b47f1751?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnYW1pbmclMjBtb3VzZXxlbnwxfHx8fDE3NjUwNDExNzh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-                  alt="Gaming Mouse"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="text-white mb-2 font-bold text-lg">Mouse Gaming Pro</h3>
-                <p className="text-purple-400 font-bold text-xl">$79.99</p>
-              </div>
-            </div>
-
-            <div className="bg-gray-800/50 border border-pink-500/30 rounded-lg overflow-hidden hover:border-pink-400 hover:shadow-lg hover:shadow-pink-500/30 transition-all duration-300 group">
-              <div className="h-48 bg-gray-900 overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1677086813101-496781a0f327?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnYW1pbmclMjBoZWFkc2V0fGVufDF8fHx8MTc2NTA0MTAyNnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-                  alt="Gaming Headset"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="text-white mb-2 font-bold text-lg">Audífonos Surround 7.1</h3>
-                <p className="text-pink-400 font-bold text-xl">49.99</p>
-              </div>
-            </div>
-
-            <div className="bg-gray-800/50 border border-cyan-500/30 rounded-lg overflow-hidden hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 group">
-              <div className="h-48 bg-gray-900 overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1636487658609-28282bb5a3a0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnYW1pbmclMjBjaGFpcnxlbnwxfHx8fDE3NjQ5ODc2NTF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-                  alt="Gaming Chair"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="text-white mb-2 font-bold text-lg">Silla Gaming Ergonómica</h3>
-                <p className="text-cyan-400 font-bold text-xl">$299.99</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Features Section */}
-        <div className="mb-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-gray-800/50 border border-cyan-500/30 rounded-lg p-6 text-center hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full mb-4 border border-cyan-500/50">
-                <Zap className="text-cyan-400" size={32} />
-              </div>
-              <h3 className="text-white mb-2 font-bold text-xl">Envío Rápido</h3>
-              <p className="text-gray-400">Recibe tus productos en 24-48 horas</p>
-            </div>
-
-            <div className="bg-gray-800/50 border border-purple-500/30 rounded-lg p-6 text-center hover:border-purple-400 hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full mb-4 border border-purple-500/50">
-                <Award className="text-purple-400" size={32} />
-              </div>
-              <h3 className="text-white mb-2 font-bold text-xl">Garantía Extendida</h3>
-              <p className="text-gray-400">Todos nuestros productos incluyen garantía</p>
-            </div>
-
-            <div className="bg-gray-800/50 border border-pink-500/30 rounded-lg p-6 text-center hover:border-pink-400 hover:shadow-lg hover:shadow-pink-500/20 transition-all duration-300">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-pink-500/20 to-cyan-500/20 rounded-full mb-4 border border-pink-500/50">
-                <TrendingUp className="text-pink-400" size={32} />
-              </div>
-              <h3 className="text-white mb-2 font-bold text-xl">Mejor Precio</h3>
-              <p className="text-gray-400">Garantizamos los precios más competitivos</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Featured Section */}
-        <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-cyan-500/30 rounded-lg p-12 text-center shadow-xl shadow-cyan-500/20">
-          <h2 className="mb-4 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 text-4xl font-bold">Envíos Gratis</h2>
-          <p className="text-gray-300 mb-8 text-lg">En compras mayores a 00</p>
-          <Link
-            to="/products"
-            className="inline-block border-2 border-cyan-400 text-cyan-400 px-8 py-3 rounded-md hover:bg-cyan-400 hover:text-black transition-all duration-300 transform hover:scale-105"
-          >
-            Explorar Catálogo
+    <div className="page">
+      <section className="hero">
+        <img
+          src="https://images.unsplash.com/photo-1603481588273-2f908a9a7a1b?auto=format&fit=crop&w=1600&q=80"
+          alt="Setup de PC"
+          className="hero__image"
+        />
+        <div className="hero__content">
+          <h1>Experiencia garantizada</h1>
+          <p>Disfrutá compras rápidas, seguras y sin complicaciones.</p>
+          <Link to="/products" className="btn btn--primary">
+            Ver productos
           </Link>
         </div>
-      </div>
+      </section>
+
+      <section className="benefits">
+        <div className="container benefits__grid">
+          {benefits.map((benefit) => (
+            <div key={benefit.title} className="benefit-card">
+              <span className="benefit-card__icon">{benefit.icon}</span>
+              <h3>{benefit.title}</h3>
+              <p>{benefit.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="categories section">
+        <div className="container">
+          <div className="section-header">
+            <h2 className="section-title">Categorías principales</h2>
+            <p className="section-subtitle">
+              Elegí lo que necesitás para actualizar tu equipo con estilo y rendimiento.
+            </p>
+          </div>
+          <div className="category-grid">
+            {categories.map((category) => (
+              <article
+                key={category.title}
+                className="category-card"
+                style={{ backgroundImage: `url(${category.image})` }}
+              >
+                <div className="category-content">
+                  <h3>{category.title}</h3>
+                  <p>{category.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="featured-products section">
+        <div className="container">
+          <div className="section-header">
+            <h2 className="section-title">Mas vendidos</h2>
+            <p className="section-subtitle">
+              Elegimos los lanzamientos más buscados para que disfrutes hasta 15% OFF pagando por transferencia.
+            </p>
+          </div>
+          <div className="featured-grid">
+            {featured.map((item) => (
+              <div key={item.title} className="featured-card">
+                <div className="featured-card__image">
+                  <img src={item.image} alt={item.title} />
+                </div>
+                <div className="featured-card__body">
+                  <h3>{item.title}</h3>
+                  <p className="featured-card__price">{item.price}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="featured-actions">
+            <Link to="/products" className="btn btn--outline">
+              Explorar catálogo
+            </Link>
+          </div>
+        </div>
+      </section>
+
+
       <Footer />
     </div>
   );
