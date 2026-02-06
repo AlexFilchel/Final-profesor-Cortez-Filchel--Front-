@@ -50,76 +50,90 @@ export function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="bg-gray-800/80 backdrop-blur-sm border border-cyan-500/30 rounded-2xl p-8 shadow-2xl shadow-cyan-500/20">
-          <div className="flex justify-center mb-8">
-            <div className="flex rounded-lg bg-gray-900/50 p-1 border border-cyan-500/30">
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-tabs">
               <button
                 onClick={() => setIsRegistering(false)}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${!isRegistering ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white' : 'text-gray-400 hover:text-white'}`}
+                className={`auth-tab ${!isRegistering ? 'is-active' : ''}`}
               >
                 Iniciar Sesión
               </button>
               <button
                 onClick={() => setIsRegistering(true)}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${isRegistering ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white' : 'text-gray-400 hover:text-white'}`}
+                className={`auth-tab ${isRegistering ? 'is-active' : ''}`}
               >
                 Registrarse
               </button>
-            </div>
           </div>
 
           {isRegistering ? (
             // Registration Form
             <div>
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-full mb-4 shadow-lg shadow-purple-500/50">
-                  <UserPlus className="w-8 h-8 text-white" />
+              <div className="auth-header">
+                <div className="auth-icon">
+                  <UserPlus className="w-7 h-7" />
                 </div>
-                <h1 className="mb-2 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 text-3xl">
-                  Crear Cuenta
-                </h1>
-                <p className="text-gray-400">Únete a la comunidad de TechGamer</p>
+                <h1>Crear cuenta</h1>
+                <p>Registrate para acceder a ofertas y seguimiento de pedidos.</p>
               </div>
-              <form onSubmit={handleRegisterSubmit} className="space-y-6">
-                <div className="flex gap-4">
-                  <div className="w-1/2">
-                    <label className="block text-cyan-400 mb-2">Nombre</label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                      <input type="text" value={registerName} onChange={(e) => setRegisterName(e.target.value)} placeholder="Nombre"
-                        className="w-full bg-gray-900/50 border border-cyan-500/30 rounded-lg pl-10 pr-4 py-3 text-white focus:outline-none focus:border-cyan-400" required />
+              <form onSubmit={handleRegisterSubmit} className="auth-form">
+                <div className="auth-row">
+                  <div>
+                    <label>Nombre</label>
+                    <div className="input-with-icon">
+                      <User size={18} />
+                      <input
+                        type="text"
+                        value={registerName}
+                        onChange={(e) => setRegisterName(e.target.value)}
+                        placeholder="Nombre"
+                        required
+                      />
                     </div>
                   </div>
-                  <div className="w-1/2">
-                    <label className="block text-cyan-400 mb-2">Apellido</label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                      <input type="text" value={registerLastname} onChange={(e) => setRegisterLastname(e.target.value)} placeholder="Apellido"
-                        className="w-full bg-gray-900/50 border border-cyan-500/30 rounded-lg pl-10 pr-4 py-3 text-white focus:outline-none focus:border-cyan-400" required />
+                  <div>
+                    <label>Apellido</label>
+                    <div className="input-with-icon">
+                      <User size={18} />
+                      <input
+                        type="text"
+                        value={registerLastname}
+                        onChange={(e) => setRegisterLastname(e.target.value)}
+                        placeholder="Apellido"
+                        required
+                      />
                     </div>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-cyan-400 mb-2">Email</label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input type="email" value={registerEmail} onChange={(e) => setRegisterEmail(e.target.value)} placeholder="tu@email.com"
-                      className="w-full bg-gray-900/50 border border-cyan-500/30 rounded-lg pl-10 pr-4 py-3 text-white focus:outline-none focus:border-cyan-400" required />
+                  <label>Email</label>
+                  <div className="input-with-icon">
+                    <Mail size={18} />
+                    <input
+                      type="email"
+                      value={registerEmail}
+                      onChange={(e) => setRegisterEmail(e.target.value)}
+                      placeholder="tu@email.com"
+                      required
+                    />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-purple-400 mb-2">Contraseña</label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input type="password" value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} placeholder="••••••••"
-                      className="w-full bg-gray-900/50 border border-purple-500/30 rounded-lg pl-10 pr-4 py-3 text-white focus:outline-none focus:border-purple-400" required />
+                  <label>Contraseña</label>
+                  <div className="input-with-icon">
+                    <Lock size={18} />
+                    <input
+                      type="password"
+                      value={registerPassword}
+                      onChange={(e) => setRegisterPassword(e.target.value)}
+                      placeholder="••••••••"
+                      required
+                    />
                   </div>
                 </div>
-                <button type="submit"
-                  className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white py-3 rounded-lg flex items-center justify-center gap-2">
-                  <UserPlus className="w-5 h-5" />
+                <button type="submit" className="btn btn--primary">
+                  <UserPlus size={18} />
                   Registrarse
                 </button>
               </form>
@@ -127,41 +141,47 @@ export function Login() {
           ) : (
             // Login Form
             <div>
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-full mb-4 shadow-lg shadow-purple-500/50">
-                  <Lock className="w-8 h-8 text-white" />
+              <div className="auth-header">
+                <div className="auth-icon">
+                  <Lock className="w-7 h-7" />
                 </div>
-                <h1 className="mb-2 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 text-3xl">
-                  Iniciar Sesión
-                </h1>
-                <p className="text-gray-400">Accede a tu cuenta de TechGamer</p>
+                <h1>Iniciar sesión</h1>
+                <p>Accedé a tu cuenta para gestionar tus compras.</p>
               </div>
-              <form onSubmit={handleLoginSubmit} className="space-y-6">
+              <form onSubmit={handleLoginSubmit} className="auth-form">
                 <div>
-                  <label className="block text-cyan-400 mb-2">Email</label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input type="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} placeholder="tu@email.com"
-                      className="w-full bg-gray-900/50 border border-cyan-500/30 rounded-lg pl-10 pr-4 py-3 text-white" required />
+                  <label>Email</label>
+                  <div className="input-with-icon">
+                    <Mail size={18} />
+                    <input
+                      type="email"
+                      value={loginEmail}
+                      onChange={(e) => setLoginEmail(e.target.value)}
+                      placeholder="tu@email.com"
+                      required
+                    />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-purple-400 mb-2">Contraseña</label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} placeholder="••••••••"
-                      className="w-full bg-gray-900/50 border border-purple-500/30 rounded-lg pl-10 pr-4 py-3 text-white" required />
+                  <label>Contraseña</label>
+                  <div className="input-with-icon">
+                    <Lock size={18} />
+                    <input
+                      type="password"
+                      value={loginPassword}
+                      onChange={(e) => setLoginPassword(e.target.value)}
+                      placeholder="••••••••"
+                      required
+                    />
                   </div>
                 </div>
-                <button type="submit"
-                  className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white py-3 rounded-lg flex items-center justify-center gap-2">
-                  <LogIn className="w-5 h-5" />
+                <button type="submit" className="btn btn--primary">
+                  <LogIn size={18} />
                   Iniciar Sesión
                 </button>
               </form>
             </div>
           )}
-        </div>
       </div>
     </div>
   );
