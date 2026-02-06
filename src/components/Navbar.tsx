@@ -39,12 +39,6 @@ export function Navbar({ cartItemsCount, onCartClick, searchQuery, onSearchChang
         </div>
 
         <div className="site-header__actions">
-          {user?.isAdmin && (
-            <Link to="/admin" className="site-header__action" title="Panel de Administración">
-              <Shield size={20} />
-              <span className="site-header__action-label">Admin</span>
-            </Link>
-          )}
           <Link to="/profile" className="site-header__action">
             <User size={20} />
             <span className="site-header__action-label">Mi cuenta</span>
@@ -87,6 +81,14 @@ export function Navbar({ cartItemsCount, onCartClick, searchQuery, onSearchChang
                 Productos
               </Link>
             </li>
+            {user?.isAdmin && (
+              <li>
+                <Link to="/admin" className="main-nav__link main-nav__admin" title="Panel de Administración">
+                  <Shield size={16} />
+                  Panel admin
+                </Link>
+              </li>
+            )}
             <li className="main-nav__item main-nav__item--faq">
               <button type="button" className="main-nav__link main-nav__link--button">
                 Preguntas frecuentes

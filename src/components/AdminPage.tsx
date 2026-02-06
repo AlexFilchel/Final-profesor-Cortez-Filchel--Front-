@@ -16,6 +16,8 @@ export function AdminPage() {
     // Sub-tab states
     const [productTab, setProductTab] = useState('manage');
     const [categoryTab, setCategoryTab] = useState('manage');
+    const [expandedProductsMenu, setExpandedProductsMenu] = useState(true);
+    const [expandedCategoriesMenu, setExpandedCategoriesMenu] = useState(false);
 
     // Data states
     const [products, setProducts] = useState<Product[]>([]);
@@ -189,151 +191,207 @@ export function AdminPage() {
         }
     };
     
+
+
+    const handleOpenProductsMenu = () => {
+        setMainTab('products');
+        setExpandedProductsMenu((prev) => !prev);
+        setExpandedCategoriesMenu(false);
+    };
+
+    const handleOpenCategoriesMenu = () => {
+        setMainTab('categories');
+        setExpandedCategoriesMenu((prev) => !prev);
+        setExpandedProductsMenu(false);
+    };
+
+    const handleOpenUsers = () => {
+        setMainTab('users');
+        setExpandedProductsMenu(false);
+        setExpandedCategoriesMenu(false);
+    };
+
     if (!user || !user.isAdmin) {
         return null;
     }
 
     return (
-        <div className="admin-container text-white">
+        <div className="admin-container">
             <div className="admin-header">
                 <h1>🛠️ Panel de Administración</h1>
                 <p>Gestiona productos, categorías y usuarios de la tienda.</p>
             </div>
 
-            <div className="tabs">
-                <button className={`tab-link ${mainTab === 'products' ? 'active' : ''}`} onClick={() => setMainTab('products')}>Productos</button>
-                <button className={`tab-link ${mainTab === 'categories' ? 'active' : ''}`} onClick={() => setMainTab('categories')}>Categorías</button>
-                <button className={`tab-link ${mainTab === 'users' ? 'active' : ''}`} onClick={() => setMainTab('users')}>Usuarios</button>
+            <div className="admin-layout">
+                <aside className="admin-sidebar">
+                    <button className={`admin-menu-btn ${mainTab === 'products' ? 'active' : ''}`} onClick={handleOpenProductsMenu}>
+                        Productos
+                    </button>
+                    {expandedProductsMenu && (
+                        <div className="admin-submenu">
+                            <button
+                                className={`admin-submenu-btn ${mainTab === 'products' && productTab === 'create' ? 'active' : ''}`}
+                                onClick={() => { setMainTab('products'); setProductTab('create'); }}
+                            >
+                                Crear nuevo Producto
+                            </button>
+                            <button
+                                className={`admin-submenu-btn ${mainTab === 'products' && productTab === 'manage' ? 'active' : ''}`}
+                                onClick={() => { setMainTab('products'); setProductTab('manage'); }}
+                            >
+                                Gestionar Producto existente
+                            </button>
+                        </div>
+                    )}
+
+                    <button className={`admin-menu-btn ${mainTab === 'categories' ? 'active' : ''}`} onClick={handleOpenCategoriesMenu}>
+                        Categorias
+                    </button>
+                    {expandedCategoriesMenu && (
+                        <div className="admin-submenu">
+                            <button
+                                className={`admin-submenu-btn ${mainTab === 'categories' && categoryTab === 'create' ? 'active' : ''}`}
+                                onClick={() => { setMainTab('categories'); setCategoryTab('create'); }}
+                            >
+                                Crear nueva Categoria
+                            </button>
+                            <button
+                                className={`admin-submenu-btn ${mainTab === 'categories' && categoryTab === 'manage' ? 'active' : ''}`}
+                                onClick={() => { setMainTab('categories'); setCategoryTab('manage'); }}
+                            >
+                                Gestionar Categoria existente
+                            </button>
+                        </div>
+                    )}
+
+                    <button className={`admin-menu-btn ${mainTab === 'users' ? 'active' : ''}`} onClick={handleOpenUsers}>
+                        Usuarios
+                    </button>
+                </aside>
+
+                <div className="admin-content">
+                    {mainTab === 'products' && (
+                        <section id="product-management" className="admin-section">
+                            <h2>Gestión de Productos</h2>
+                            <div id="product-create" className={`tab-content ${productTab === 'create' ? 'active' : ''}`}>
+                                <div className="admin-card">
+                                    <h3>Crear Nuevo Producto</h3>
+                                    <form className="form" onSubmit={handleCreateProduct}>
+                                        <div className="form-group">
+                                            <label htmlFor="productName">Nombre</label>
+                                            <input type="text" value={createProductForm.name} onChange={e => setCreateProductForm({...createProductForm, name: e.target.value})} required />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Descripción</label>
+                                            <textarea rows={3} value={createProductForm.description} onChange={e => setCreateProductForm({...createProductForm, description: e.target.value})} required></textarea>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Precio</label>
+                                            <input type="number" step="0.01" value={createProductForm.price} onChange={e => setCreateProductForm({...createProductForm, price: e.target.value})} required />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Stock</label>
+                                            <input type="number" value={createProductForm.stock} onChange={e => setCreateProductForm({...createProductForm, stock: e.target.value})} required />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Categoría</label>
+                                            <select value={createProductForm.category_id} onChange={e => setCreateProductForm({...createProductForm, category_id: e.target.value})} required>
+                                                <option value="">Selecciona una categoría...</option>
+                                                {categories.map(cat => <option key={cat.id_key} value={cat.id_key}>{cat.name}</option>)}
+                                            </select>
+                                        </div>
+                                        <button type="submit" className="btn-primary">Crear Producto</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div id="product-manage" className={`tab-content ${productTab === 'manage' ? 'active' : ''}`}>
+                                <div className="admin-card">
+                                    <h3>Listado de Productos</h3>
+                                    {productsLoading ? <div className="loading">Cargando...</div> : (
+                                        <table className="table">
+                                            <thead><tr><th>Nombre</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr></thead>
+                                            <tbody>
+                                                {products.map(p => (
+                                                    <tr key={p.id_key}>
+                                                        <td>{p.name}</td>
+                                                        <td>${p.price.toFixed(2)}</td>
+                                                        <td>{p.stock}</td>
+                                                        <td>
+                                                            <button className="btn-secondary btn-sm" onClick={() => { setSelectedProduct(p); setShowModifyModal(true); }}>Modificar</button>
+                                                            <button className="btn-danger btn-sm" onClick={() => handleDeleteProduct(p.id_key)}>Eliminar</button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    )}
+                                </div>
+                            </div>
+                        </section>
+                    )}
+
+                    {mainTab === 'categories' && (
+                        <section id="category-management" className="admin-section">
+                            <h2>Gestión de Categorías</h2>
+                            <div id="category-create" className={`tab-content ${categoryTab === 'create' ? 'active' : ''}`}>
+                                <div className="admin-card">
+                                    <h3>Crear Nueva Categoría</h3>
+                                    <form className="form" onSubmit={handleCreateCategory}>
+                                        <div className="form-group">
+                                            <label htmlFor="categoryName">Nombre</label>
+                                            <input type="text" id="categoryName" name="categoryName" required />
+                                        </div>
+                                        <button type="submit" className="btn-primary">Crear Categoría</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div id="category-manage" className={`tab-content ${categoryTab === 'manage' ? 'active' : ''}`}>
+                                <div className="admin-card">
+                                    <h3>Listado de Categorías</h3>
+                                    {categoriesLoading ? <div className="loading">Cargando...</div> : (
+                                        <table className="table">
+                                            <thead><tr><th>Nombre</th><th>Acciones</th></tr></thead>
+                                            <tbody>
+                                                {categories.map(c => (
+                                                    <tr key={c.id_key}>
+                                                        <td>{c.name}</td>
+                                                        <td><button className="btn-danger btn-sm" onClick={() => handleDeleteCategory(c.id_key)}>Eliminar</button></td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    )}
+                                </div>
+                            </div>
+                        </section>
+                    )}
+
+                    {mainTab === 'users' && (
+                        <section id="user-management" className="admin-section">
+                            <h2>Gestión de Usuarios</h2>
+                            <div className="admin-card">
+                                <h3>Listado de Usuarios</h3>
+                                {usersLoading ? <div className="loading">Cargando...</div> : (
+                                    <table className="table">
+                                        <thead><tr><th>ID</th><th>Nombre</th><th>Email</th><th>Rol</th></tr></thead>
+                                        <tbody>
+                                            {users.map(u => (
+                                                <tr key={u.id_key}>
+                                                    <td>{u.id_key}</td>
+                                                    <td>{u.name} {u.lastname}</td>
+                                                    <td>{u.email}</td>
+                                                    <td>{u.is_admin ? 'Admin' : 'Usuario'}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                )}
+                            </div>
+                        </section>
+                    )}
+                </div>
             </div>
 
-            {mainTab === 'products' && (
-                <section id="product-management" className="admin-section">
-                    <h2>Gestión de Productos</h2>
-                    <div className="tabs">
-                        <button className={`tab-link ${productTab === 'create' ? 'active' : ''}`} onClick={() => setProductTab('create')}>Crear Nuevo</button>
-                        <button className={`tab-link ${productTab === 'manage' ? 'active' : ''}`} onClick={() => setProductTab('manage')}>Gestionar Existentes</button>
-                    </div>
-                    <div id="product-create" className={`tab-content ${productTab === 'create' ? 'active' : ''}`}>
-                        <div className="admin-card">
-                            <h3>Crear Nuevo Producto</h3>
-                            <form className="form" onSubmit={handleCreateProduct}>
-                                <div className="form-group">
-                                    <label htmlFor="productName">Nombre</label>
-                                    <input type="text" value={createProductForm.name} onChange={e => setCreateProductForm({...createProductForm, name: e.target.value})} required />
-                                </div>
-                                <div className="form-group">
-                                    <label>Descripción</label>
-                                    <textarea rows={3} value={createProductForm.description} onChange={e => setCreateProductForm({...createProductForm, description: e.target.value})} required></textarea>
-                                </div>
-                                <div className="form-group">
-                                    <label>Precio</label>
-                                    <input type="number" step="0.01" value={createProductForm.price} onChange={e => setCreateProductForm({...createProductForm, price: e.target.value})} required />
-                                </div>
-                                <div className="form-group">
-                                    <label>Stock</label>
-                                    <input type="number" value={createProductForm.stock} onChange={e => setCreateProductForm({...createProductForm, stock: e.target.value})} required />
-                                </div>
-                                <div className="form-group">
-                                    <label>Categoría</label>
-                                    <select value={createProductForm.category_id} onChange={e => setCreateProductForm({...createProductForm, category_id: e.target.value})} required>
-                                        <option value="">Selecciona una categoría...</option>
-                                        {categories.map(cat => <option key={cat.id_key} value={cat.id_key}>{cat.name}</option>)}
-                                    </select>
-                                </div>
-                                <button type="submit" className="btn-primary">Crear Producto</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div id="product-manage" className={`tab-content ${productTab === 'manage' ? 'active' : ''}`}>
-                         <div className="admin-card">
-                            <h3>Listado de Productos</h3>
-                            {productsLoading ? <div className="loading">Cargando...</div> : (
-                                <table className="table">
-                                    <thead><tr><th>Nombre</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr></thead>
-                                    <tbody>
-                                        {products.map(p => (
-                                            <tr key={p.id_key}>
-                                                <td>{p.name}</td>
-                                                <td>${p.price.toFixed(2)}</td>
-                                                <td>{p.stock}</td>
-                                                <td>
-                                                    <button className="btn-secondary btn-sm" onClick={() => { setSelectedProduct(p); setShowModifyModal(true); }}>Modificar</button>
-                                                    <button className="btn-danger btn-sm" onClick={() => handleDeleteProduct(p.id_key)}>Eliminar</button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            )}
-                        </div>
-                    </div>
-                </section>
-            )}
-
-            {mainTab === 'categories' && (
-                <section id="category-management" className="admin-section">
-                    <h2>Gestión de Categorías</h2>
-                    <div className="tabs">
-                        <button className={`tab-link ${categoryTab === 'create' ? 'active' : ''}`} onClick={() => setCategoryTab('create')}>Crear Nueva</button>
-                        <button className={`tab-link ${categoryTab === 'manage' ? 'active' : ''}`} onClick={() => setCategoryTab('manage')}>Gestionar Existentes</button>
-                    </div>
-                     <div id="category-create" className={`tab-content ${categoryTab === 'create' ? 'active' : ''}`}>
-                        <div className="admin-card">
-                            <h3>Crear Nueva Categoría</h3>
-                            <form className="form" onSubmit={handleCreateCategory}>
-                                <div className="form-group">
-                                    <label htmlFor="categoryName">Nombre</label>
-                                    <input type="text" id="categoryName" name="categoryName" required />
-                                </div>
-                                <button type="submit" className="btn-primary">Crear Categoría</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div id="category-manage" className={`tab-content ${categoryTab === 'manage' ? 'active' : ''}`}>
-                        <div className="admin-card">
-                            <h3>Listado de Categorías</h3>
-                            {categoriesLoading ? <div className="loading">Cargando...</div> : (
-                                <table className="table">
-                                    <thead><tr><th>Nombre</th><th>Acciones</th></tr></thead>
-                                    <tbody>
-                                        {categories.map(c => (
-                                            <tr key={c.id_key}>
-                                                <td>{c.name}</td>
-                                                <td><button className="btn-danger btn-sm" onClick={() => handleDeleteCategory(c.id_key)}>Eliminar</button></td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            )}
-                        </div>
-                    </div>
-                </section>
-            )}
-
-            {mainTab === 'users' && (
-                <section id="user-management" className="admin-section">
-                    <h2>Gestión de Usuarios</h2>
-                    <div className="admin-card">
-                        <h3>Listado de Usuarios</h3>
-                        {usersLoading ? <div className="loading">Cargando...</div> : (
-                            <table className="table">
-                                <thead><tr><th>ID</th><th>Nombre</th><th>Email</th><th>Rol</th></tr></thead>
-                                <tbody>
-                                    {users.map(u => (
-                                        <tr key={u.id_key}>
-                                            <td>{u.id_key}</td>
-                                            <td>{u.name} {u.lastname}</td>
-                                            <td>{u.email}</td>
-                                            <td>{u.is_admin ? 'Admin' : 'Usuario'}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        )}
-                    </div>
-                </section>
-            )}
-            
             {showModifyModal && selectedProduct && (
                  <div className="modal" style={{ display: 'flex' }}>
                     <div className="modal-content">

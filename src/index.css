@@ -2791,6 +2791,12 @@ h1, h2, h3, h4 {
   color: var(--brand-blue);
 }
 
+.main-nav__admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 
 .main-nav__item {
   position: relative;

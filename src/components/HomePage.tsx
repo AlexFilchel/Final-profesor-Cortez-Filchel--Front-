@@ -94,19 +94,19 @@ export function HomePage({ searchQuery }: HomePageProps) {
       title: 'NVIDIA GeForce RTX 4070',
       price: '$699.99',
       image:
-        'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1629429407756-01cd3d7cfb38?auto=format&fit=crop&w=1200&q=80',
     },
     {
       title: 'Kingston Fury 32GB DDR5',
       price: '$179.99',
       image:
-        'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1562976540-1502c2145186?auto=format&fit=crop&w=1200&q=80',
     },
     {
       title: 'Mouse Logitech G Pro X',
       price: '$129.99',
       image:
-        'https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1541140532154-b024d705b90a?auto=format&fit=crop&w=1200&q=80',
     },
     {
       title: 'Teclado HyperX Alloy Origins',
@@ -143,7 +143,7 @@ export function HomePage({ searchQuery }: HomePageProps) {
     <div className="page">
       <section className="hero">
         <img
-          src="https://images.unsplash.com/photo-1603481588273-2f908a9a7a1b?auto=format&fit=crop&w=1600&q=80"
+          src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=1600&q=80"
           alt="Setup de PC"
           className="hero__image"
         />
