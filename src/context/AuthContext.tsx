@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           id: response.id_key.toString(),
           email: response.email,
           name: response.name,
-          isAdmin: response.is_admin || email === 'admin@techstore.com',
+          isAdmin: response.is_admin || email === 'admin@hardwarehub.com',
         };
 
         setUser(userData);
