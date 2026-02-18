@@ -1,0 +1,9 @@
+{
+  "framework": null,
+  "buildCommand": "node node_modules/vite/bin/vite.js build",
+  "outputDirectory": "build",
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/index.html" }
+  ]
+}
