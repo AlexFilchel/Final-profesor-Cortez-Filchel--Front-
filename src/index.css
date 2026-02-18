@@ -3809,34 +3809,34 @@ h1, h2, h3, h4 {
 .bg-gray-900\/50,
 .bg-gray-800\/50,
 .bg-black {
-  background-color: #fff !important;
+  background-color: #fff !importante;
 }
 
 .text-white {
-  color: var(--text-dark) !important;
+  color: var(--text-dark) !importante;
 }
 
 .text-gray-400,
 .text-gray-300,
 .text-gray-500 {
-  color: var(--text-muted) !important;
+  color: var(--text-muted) !importante;
 }
 
 .text-cyan-400,
 .text-purple-400,
 .text-pink-400,
 .text-green-400 {
-  color: var(--brand-blue) !important;
+  color: var(--brand-blue) !importante;
 }
 
 .border-cyan-500\/30,
 .border-cyan-500\/20,
 .border-purple-500\/30,
 .border-pink-500\/30 {
-  border-color: rgba(0, 74, 173, 0.2) !important;
+  border-color: rgba(0, 74, 173, 0.2) !importante;
 }
 
 .shadow-cyan-500\/20,
 .shadow-cyan-500\/10 {
-  box-shadow: var(--shadow-soft) !important;
+  box-shadow: var(--shadow-soft) !importante;
 }
