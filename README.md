@@ -53,21 +53,6 @@ Este comando iniciará el servidor de desarrollo y podrás acceder a la aplicaci
 
 ---
 
-## 📂 Estructura del proyecto
-
-El proyecto sigue una estructura típica de aplicaciones frontend modernas:
-
-```
-/src
-  /components
-  /pages
-  /services
-  main.jsx
-  App.jsx
-```
-
----
-
 ## 🛠 Tecnologías utilizadas
 
 - JavaScript
